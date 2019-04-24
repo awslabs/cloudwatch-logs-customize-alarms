@@ -100,3 +100,7 @@ This Lambda function was created with runtime Node.js 4.3. It has been tested wi
 
 The Lambda function has the following limitation:
 * The nextToken in filterLogEvents api call is ignored. For production use, the lambda function should be modified to query filterLogEvents again with the nextToken received from the previous call. We need to continue querying until we get a null nextToken. More information on the api can be found [here](http://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_FilterLogEvents.html).
+
+## License Summary
+
+This sample code is made available under the MIT license. 
