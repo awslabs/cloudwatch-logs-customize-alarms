@@ -90,7 +90,7 @@ This Lambda function was created with runtime Node.js 4.3. It has been tested wi
 ## Getting started
 
 1. Download the zip file located at dist/customize-alarms.
-2. Unzip the file. You will see an index.js file and node_modules folder. Index.js is the Lambda function and node_mdoules contain the specific version of AWS SDK.
+2. Unzip the file. You will see an index.js file and node_modules folder. Index.js is the Lambda function and node_modules contain the specific version of AWS SDK.
 3. Open index.js in editor of your choice and add the information as specified in the 'Configuration parameters'.
 5. Once done with the changes in Lambda, zip the node.js file and node_modules folder.
 6. Upload the zip file to the Lambda function.
