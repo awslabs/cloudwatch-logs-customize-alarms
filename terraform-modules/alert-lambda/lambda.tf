@@ -5,7 +5,7 @@
 
 data "archive_file" "lambda" {
   type        = "zip"
-  source_file = "${path.module}/../index.mjs"
+  source_file = "${path.module}/../../index.mjs"
   output_path = "lambda.zip"
 }
 

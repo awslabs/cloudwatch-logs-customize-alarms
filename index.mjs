@@ -85,6 +85,12 @@ export const handler = async function (event, context) {
         data.events,
         filterParameters
     );
+
+    // return 200
+    return {
+        statusCode: 200,
+        body: JSON.stringify('success')
+    };
 };
 
 
@@ -248,11 +254,6 @@ const sendEmail = async function (message, events, filterParameters, region = 'u
     const email = await ses.send(sendCmd);
     console.log('email:', email);
     console.log("===EMAIL SENT===");
-
-    // return 200
-    return {
-        statusCode: 200,
-        body: JSON.stringify('success')
-    };
 }
+
 
