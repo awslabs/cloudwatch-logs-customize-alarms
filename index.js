@@ -4,6 +4,8 @@ var cwl = new aws.CloudWatchLogs();
 
 var ses = new aws.SES();
 
+// note: this file uses aws sdk v2; for v3, refer to index.mjs
+
 exports.handler = function(event, context) {
     var message = JSON.parse(event.Records[0].Sns.Message);
     var alarmName = message.AlarmName;
