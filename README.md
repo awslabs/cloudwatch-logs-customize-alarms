@@ -8,17 +8,21 @@ Copyright 2016- Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 When you get an alarm, you want enough information to decide whether it needs immediate attention or not. You also want to customize the alarm text to operational needs. The **CloudWatch Logs Customize Alarms** is a Lambda function that helps in reading the logs from CloudWatch Logs during an alarm and send a customized email through SES.
 
+Though the lambda could do anything (alerting a chat channel, for example), a common expectation from developers from a log-based alarm is a link to the log event(s) which triggered the alarm. In this case, the lambda expects an SES domain and sends the email from a custom domain (e.g., "alerts@yourdomain.com").
+
 ## Flow of Events
 
 ![Flow of events](https://s3.amazonaws.com/aws-cloudwatch/downloads/cloudwatch-logs-customize-alarms/demo-2.png)
 
 ## Setup Overview
 
-Lambda function is written in Node.js. We do have a dependency on the latest aws sdk which includes the metrics to logs feature. Hence we create a deployment package. You can create a new Lambda function, and copy the code in index.js from this repository to your function. See 'Configurable parameters' section below.  
+When cloudwatch alarms are triggered, a subscribed lambda may be run which takes the CloudBridge Event (in JSON) as its input. By parsing the event, one can determine which alarm was thrown, and send custom alerts, such as via AWS SES, using the aws sdk.
 
-### Pre-requisite
+Lambda function is written in Node.js. We do have a dependency on the latest (v3) aws sdk. Hence, we create a deployment package. You can create a new Lambda function, and copy the code in index.js from this repository to your function. See 'Configurable parameters' section below.
 
-* CloudWatch Logs has a Log group with a metric filter.
+### Pre-requisites
+
+* CloudWatch Logs has a log-group with a metric filter.
 * A CloudWatch Alarm is created to trigger when that metric exceeds a threshold.
 * SES domain is created and verified
 
@@ -69,10 +73,14 @@ Since there is a need here for various AWS services making calls to each other, 
 
 ***Configurable parameters:***
 
-1. **Destination** - The destination email address where email needs to be send.
-2. **Source** - The source email address sending the email.
+Parameters are configurable as environment variables for the lambda.
 
-For more information visit the SES documentation [here](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/SES.html)
+1. `TO` - the address to which emails will be sent
+2. `SOURCE` - the "From:" address on the emails
+3. `REPLY_TO` - the reply address on the emails
+4. `CC` - the "cc" list for the email (optional)
+
+see: [SES docs](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/client/ses/)
 
 ***Instructions:***
 
@@ -85,7 +93,11 @@ For more information visit the SES documentation [here](http://docs.aws.amazon.c
 
 ### Lambda Configuration
 
-This Lambda function was created with runtime Node.js 4.3. It has been tested with 128 MB and 3 seconds timeout. No VPC was used. You can change the configuration based on your testing.
+This Lambda function was created with runtime Node.js 20. Recommended settings are 128 MB and 3 seconds timeout. Change the configuration based on your testing.
+
+## Failsafe
+
+If you are using this as your primary alerting mechanism, you may consider a simple "failsafe" alarm on the lambda itself, sent to your devops team. In this case, if the lambda somehow fails without sending an email, knowledge than an alert has been missed can still reach the devops/development teams.
 
 ## Getting started
 
